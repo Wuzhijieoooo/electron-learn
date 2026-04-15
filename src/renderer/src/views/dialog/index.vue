@@ -1,19 +1,43 @@
 <template>
   <div>
     <h2>弹窗</h2>
-    <el-button @click="handleOpen1">messagebox</el-button>
-    <el-button @click="handleOpen2">errorMessageBox</el-button>
-    <el-button @click="handleOpen3">showOpenDialog</el-button>
+    <Dialog>
+      <DialogTrigger>
+        <Button>ui组件弹窗</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete your account and remove your
+            data from our servers.
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+
+    <Button @click="handleOpen1">messagebox</Button>
+    <Button @click="handleOpen2">errorMessageBox</Button>
+    <Button @click="handleOpen3">showOpenDialog</Button>
     <div>content:</div>
     <div>{{ fileContent }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Button } from '@/components/ui/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
 import { MessageBoxOptions, OpenDialogOptions } from 'electron';
 import { ref } from 'vue';
 const fileContent = ref('');
-
 const handleOpen1 = async (): Promise<void> => {
   const options: MessageBoxOptions = {
     type: 'info',
