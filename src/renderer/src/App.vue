@@ -1,32 +1,71 @@
 <script setup lang="ts">
-// import Versions from './components/Versions.vue';
-
-// const ipcHandle = (): void => window.electron.ipcRenderer.send('ping');
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const handleOpen = (key: string, keyPath: string[]): void => {
+  console.log(key, keyPath);
+  router.push({ path: key });
+};
+const handleClose = (key: string, keyPath: string[]): void => {
+  console.log(key, keyPath);
+};
+const setWinState = (action): void => {
+  const { winApi } = window.api;
+  winApi.send('set-state', action);
+};
 </script>
 
 <template>
-  <!-- <img alt="logo" class="logo" src="./assets/electron.svg" />
-  <div class="creator">Powered by electron-vite</div>
-  <div class="text">
-    Build an Electron app with
-    <span class="vue">Vue</span>
-    and
-    <span class="ts">TypeScript</span>
-  </div>
-  <p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-  <div class="actions">
-    <div class="action">
-      <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
-    </div>
-    <div class="action">
-      <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
-    </div>
-  </div>
-  <Versions /> -->
-  <div class="flex justify-start">
-    <div class="w-[200px]">
-      <div class="text-2xl font-bold">ipc</div>
-    </div>
-    <router-view />
-  </div>
+  <el-container class="h-full">
+    <el-header class="bg-amber-600 leading-[60px] flex justify-between">
+      <div>渲染进程</div>
+      <div class="flex items-center gap-x-2">
+        <el-icon @click="setWinState('min')"><Minus /></el-icon>
+        <el-icon @click="setWinState('max')"><FullScreen /></el-icon>
+        <el-icon @click="setWinState('restore')"><RefreshLeft /></el-icon>
+        <el-icon @click="setWinState('fullScreen')"><Monitor /></el-icon>
+        <el-icon @click="setWinState('close')"><Close /></el-icon>
+      </div>
+    </el-header>
+    <el-container>
+      <el-aside class="border-r" width="200px">
+        <el-menu
+          active-text-color="#ffd04b"
+          background-color="#545c64"
+          class="el-menu-vertical-demo"
+          default-active="2"
+          text-color="#fff"
+          @open="handleOpen"
+          @close="handleClose"
+        >
+          <el-menu-item index="/ipc">
+            <el-icon><icon-menu /></el-icon>
+            <span>ipc</span>
+          </el-menu-item>
+          <el-menu-item index="/ipc/theme">
+            <el-icon><icon-menu /></el-icon>
+            <span>theme</span>
+          </el-menu-item>
+          <el-menu-item index="/menu/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>menu</span>
+          </el-menu-item>
+          <el-menu-item index="/notifications/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>通知</span>
+          </el-menu-item>
+          <el-menu-item index="/shortcut/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>快捷键</span>
+          </el-menu-item>
+          <el-menu-item index="/dialog/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>弹窗</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <router-view />
+      </el-main>
+    </el-container>
+  </el-container>
 </template>

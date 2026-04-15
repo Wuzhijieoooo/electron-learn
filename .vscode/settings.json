@@ -1,4 +1,8 @@
 {
+  "tailwindCSS.experimental.configFile": "src/renderer/src/assets/main.css",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
@@ -11,7 +15,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.quickSuggestions": {
+      "strings": true
+    }
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
