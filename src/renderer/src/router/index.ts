@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 export const routes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/ipc/index'
+  },
+  {
     path: '/ipc',
     redirect: '/ipc/index',
     children: [
@@ -73,6 +77,48 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@renderer/views/dialog/index.vue'),
         meta: {
           title: 'dialog',
+          icon: ''
+        }
+      }
+    ]
+  },
+  {
+    path: '/online',
+    redirect: '/online/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@renderer/views/online/index.vue'),
+        meta: {
+          title: 'online',
+          icon: ''
+        }
+      }
+    ]
+  },
+  {
+    path: '/communication',
+    redirect: '/communication/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@renderer/views/communication/index.vue'),
+        meta: {
+          title: 'communication',
+          icon: ''
+        }
+      }
+    ]
+  },
+  {
+    path: '/screenshot',
+    redirect: '/screenshot/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@renderer/views/screenshot/index.vue'),
+        meta: {
+          title: 'screenshot',
           icon: ''
         }
       }

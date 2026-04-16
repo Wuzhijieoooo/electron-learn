@@ -9,6 +9,16 @@ export default defineConfig({
   main: {},
   preload: {},
   renderer: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve('src/renderer/index.html'),
+          loading: resolve('src/renderer/loading.html'),
+          child: resolve('src/renderer/child.html'),
+          capture: resolve('src/renderer/capture.html')
+        }
+      }
+    },
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src'),

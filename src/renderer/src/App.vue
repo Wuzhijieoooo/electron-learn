@@ -61,6 +61,18 @@ const setWinState = (action): void => {
             <el-icon><icon-menu /></el-icon>
             <span>弹窗</span>
           </el-menu-item>
+          <el-menu-item index="/online/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>online</span>
+          </el-menu-item>
+          <el-menu-item index="/communication/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>communication</span>
+          </el-menu-item>
+          <el-menu-item index="/screenshot/index">
+            <el-icon><icon-menu /></el-icon>
+            <span>screenshot</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>

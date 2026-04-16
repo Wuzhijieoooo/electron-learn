@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family:
+          'Segoe UI',
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      .loading-card {
+        text-align: center;
+      }
+
+      #loading {
+        font-size: 30px;
+      }
+
+      #time {
+        margin-top: 12px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-card">
+      <div id="loading">加载中...</div>
+      <div id="time">3</div>
+    </div>
+    <script>
+      let timeout = 3;
+      const time = document.getElementById('time');
+
+      const timer = setInterval(() => {
+        timeout -= 1;
+        if (time) {
+          time.innerText = String(timeout);
+        }
+
+        if (timeout <= 0) {
+          window.electron.ipcRenderer.send('loadingEnd');
+          clearInterval(timer);
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
