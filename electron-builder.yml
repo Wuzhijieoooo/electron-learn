@@ -2,9 +2,11 @@ appId: com.electron.app
 productName: learn
 directories:
   buildResources: build
+  output: dist/${os}
 files:
   - '!**/.vscode/*'
   - '!src/*'
+  - '!.dmgbuild-venv/**'
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
@@ -28,6 +30,7 @@ mac:
   notarize: false
 dmg:
   artifactName: ${name}-${version}.${ext}
+  backgroundColor: "#ffffff"
 linux:
   target:
     - AppImage
