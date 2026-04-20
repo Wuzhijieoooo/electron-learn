@@ -27,6 +27,7 @@ const setWinState = (action): void => {
     <el-header class="bg-amber-600 leading-[60px] flex justify-between">
       <h1>版本：{{ appVersion || '--' }}</h1>
       <div>渲染进程</div>
+      <div>123</div>
       <div class="flex items-center gap-x-2">
         <el-icon @click="setWinState('min')"><Minus /></el-icon>
         <el-icon @click="setWinState('max')"><FullScreen /></el-icon>
