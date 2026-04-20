@@ -303,6 +303,9 @@ ipcMain.handle('toggleTheme', (_e, theme: Theme) => {
   console.log(theme);
   nativeTheme.themeSource = theme;
 });
+ipcMain.handle('app:get-version', () => {
+  return app.getVersion();
+});
 
 ipcMain.on('contextMenu', (e, template = []) => {
   const menu = Menu.buildFromTemplate([

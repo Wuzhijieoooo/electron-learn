@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 const router = useRouter();
+const appVersion = ref('');
+
+onMounted(async () => {
+  appVersion.value = await window.api.winApi.getAppVersion();
+});
+
 const handleOpen = (key: string, keyPath: string[]): void => {
   console.log(key, keyPath);
   router.push({ path: key });
@@ -17,6 +25,7 @@ const setWinState = (action): void => {
 <template>
   <el-container class="h-full">
     <el-header class="bg-amber-600 leading-[60px] flex justify-between">
+      <h1>版本：{{ appVersion || '--' }}</h1>
       <div>渲染进程</div>
       <div class="flex items-center gap-x-2">
         <el-icon @click="setWinState('min')"><Minus /></el-icon>

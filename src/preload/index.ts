@@ -20,6 +20,9 @@ const api: RendererAPI = {
     send(type, action) {
       ipcRenderer.send(type, action);
     },
+    getAppVersion() {
+      return ipcRenderer.invoke('app:get-version') as Promise<string>;
+    },
     async readFile(path) {
       return await fsp.readFile(path, 'utf-8');
     },

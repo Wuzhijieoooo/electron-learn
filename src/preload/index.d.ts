@@ -34,6 +34,7 @@ export interface RendererAPI {
   };
   winApi: {
     send(type: string, action: WinState): void;
+    getAppVersion(): Promise<string>;
     readFile(path: string): Promise<string>;
     readFileStream(path: string): Promise<string>;
     checkForUpdates(): Promise<CheckForUpdatesResult>;
