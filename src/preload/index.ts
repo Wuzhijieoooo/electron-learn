@@ -1,8 +1,11 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
-import type { RendererAPI } from './index.d';
+import type { CheckForUpdatesResult, RendererAPI, UpdaterStatusPayload } from './index.d';
 import fsp from 'fs/promises';
 import fs from 'fs';
+
+const UPDATER_STATUS_EVENT = 'updater:status';
+
 // Custom APIs for renderer
 const api: RendererAPI = {
   httpUtils: {
@@ -21,7 +24,7 @@ const api: RendererAPI = {
       return await fsp.readFile(path, 'utf-8');
     },
     readFileStream(path) {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         const stream = fs.createReadStream(path, 'utf-8');
         let data = '';
         stream.on('data', (chunk) => {
@@ -31,7 +34,28 @@ const api: RendererAPI = {
         stream.on('end', () => {
           resolve(data);
         });
+        stream.on('error', (error) => {
+          reject(error);
+        });
       });
+    },
+    checkForUpdates() {
+      return ipcRenderer.invoke('updater:check-for-updates') as Promise<CheckForUpdatesResult>;
+    },
+    getUpdaterStatus() {
+      return ipcRenderer.invoke('updater:get-status') as Promise<UpdaterStatusPayload>;
+    },
+    quitAndInstall() {
+      ipcRenderer.send('updater:quit-and-install');
+    },
+    onUpdaterStatus(listener) {
+      const wrapped = (_event: IpcRendererEvent, payload: UpdaterStatusPayload): void => {
+        listener(payload);
+      };
+      ipcRenderer.on(UPDATER_STATUS_EVENT, wrapped);
+      return () => {
+        ipcRenderer.removeListener(UPDATER_STATUS_EVENT, wrapped);
+      };
     }
   }
 };

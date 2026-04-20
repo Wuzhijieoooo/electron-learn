@@ -1,6 +1,31 @@
 import type { ElectronAPI } from '@electron-toolkit/preload';
 
 export type WinState = 'min' | 'max' | 'fullScreen' | 'restore' | 'close';
+export type UpdaterStatus =
+  | 'idle'
+  | 'checking'
+  | 'available'
+  | 'not-available'
+  | 'downloading'
+  | 'downloaded'
+  | 'error';
+
+export interface UpdaterStatusPayload {
+  status: UpdaterStatus;
+  message: string;
+  version?: string;
+  progress?: number;
+  bytesPerSecond?: number;
+  transferred?: number;
+  total?: number;
+  releaseNotes?: string;
+}
+
+export interface CheckForUpdatesResult {
+  ok: boolean;
+  message: string;
+  status: UpdaterStatus;
+}
 
 export interface RendererAPI {
   httpUtils: {
@@ -11,6 +36,10 @@ export interface RendererAPI {
     send(type: string, action: WinState): void;
     readFile(path: string): Promise<string>;
     readFileStream(path: string): Promise<string>;
+    checkForUpdates(): Promise<CheckForUpdatesResult>;
+    getUpdaterStatus(): Promise<UpdaterStatusPayload>;
+    quitAndInstall(): void;
+    onUpdaterStatus(listener: (payload: UpdaterStatusPayload) => void): () => void;
   };
 }
 

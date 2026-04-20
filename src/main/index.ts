@@ -20,9 +20,12 @@ import {
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+// import trayIcon from './assets/duckTemplate2.png?asset';
+import trayIcon from '../../resources/duckTemplate2.png?asset';
 import type { WinState } from '../preload/index.d';
 import { Theme } from '../renderer/src/views/ipc/type';
 import { registerShortcuts, unregisterShortcuts } from './shortcut';
+import { setupAutoUpdater } from './updater';
 // import type { Theme } from '@renderer/views/ipc/type';
 // function createAppMenu(): void {
 //   const template: MenuItemConstructorOptions[] = [];
@@ -82,11 +85,36 @@ import { registerShortcuts, unregisterShortcuts } from './shortcut';
 // }
 let tray: Tray | null = null;
 function createTray(): void {
-  const iconPath = join(app.getAppPath(), 'src/main/assets/duckTemplate2.png');
-  console.log('Tray icon path:', nativeImage.createFromPath(iconPath));
-  tray = new Tray(nativeImage.createFromPath(iconPath));
-  tray.setTitle('鸭子App');
+  const trayImage = nativeImage.createFromPath(trayIcon);
+
+  if (trayImage.isEmpty()) {
+    console.error('[tray] Failed to load tray icon:', trayIcon);
+    return;
+  }
+
+  // const sizedTrayImage =
+  //   process.platform === 'darwin' ? trayImage.resize({ width: 18, height: 18 }) : trayImage;
+  tray = new Tray(trayImage);
+  if (process.platform === 'darwin') {
+    tray.setTitle('鸭子App');
+  }
+  // tray.setContextMenu(
+  //   Menu.buildFromTemplate([
+  //     {
+  //       label: '显示主窗口',
+  //       click: () => {
+  //         if (!mainWindow || mainWindow.isDestroyed()) {
+  //           createWindow();
+  //         }
+  //         mainWindow?.show();
+  //       }
+  //     },
+  //     { type: 'separator' },
+  //     { role: 'quit', label: '退出' }
+  //   ])
+  // );
   tray.setToolTip('这是鸭子app');
+  console.log('[tray] Created successfully:', { platform: process.platform, trayIcon });
 }
 
 // function updateCheck(): void {
@@ -209,6 +237,9 @@ app.whenReady().then(() => {
   createTray();
   // createLoadingWindow();
   createWindow();
+  setupAutoUpdater({
+    getMainWindow: () => mainWindow
+  });
   // updateCheck();
   registerShortcuts();
 
