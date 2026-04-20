@@ -16,4 +16,4 @@ NPM_CONFIG_ELECTRON_MIRROR= \
 ELECTRON_MIRROR= \
 CSC_IDENTITY_AUTO_DISCOVERY=false \
 CUSTOM_DMGBUILD_PATH="$DMGBUILD_BIN" \
-electron-builder --mac
+electron-builder --mac "$@"

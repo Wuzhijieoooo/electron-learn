@@ -19,6 +19,7 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && ./scripts/build-mac.sh",
+    "build:mac:publish": "npm run build && ./scripts/build-mac.sh --publish always",
     "build:linux": "npm run build && electron-builder --linux"
   },
   "dependencies": {

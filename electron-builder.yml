@@ -46,8 +46,11 @@ appImage:
 npmRebuild: false
 generateUpdatesFilesForAllChannels: true
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  owner: Wuzhijieoooo
+  repo: electron-learn
+  private: false
+  releaseType: release
   channel: latest
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/

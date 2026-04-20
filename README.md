@@ -38,12 +38,14 @@ $ pnpm build:linux
 This project uses `electron-builder` + `electron-updater`.
 Incremental update relies on `.blockmap` files generated during release packaging.
 
-### 1) Configure update feed
+### 1) Configure update feed (GitHub Releases)
 
 - `electron-builder.yml` controls packaged app update metadata:
-  - `publish.provider: generic`
-  - `publish.url: https://your-cdn.com/auto-updates` (replace before release)
-- For local/dev validation, set `dev-app-update.yml` with the same update server.
+  - `publish.provider: github`
+  - `publish.owner: Wuzhijieoooo`
+  - `publish.repo: electron-learn`
+- `dev-app-update.yml` uses the same GitHub repo for local/dev validation.
+- Build/publish requires `GH_TOKEN` in environment variables.
 
 ### 2) Runtime behavior
 
@@ -64,3 +66,21 @@ Upload all generated files for a version, especially:
 - diff files: `*.blockmap`
 
 If `.yml` or `.blockmap` is missing on server, incremental update may fall back to full download or fail.
+
+### 4) First release with GitHub
+
+```bash
+# 1. bump version (example)
+npm version patch
+
+# 2. push commit + tag
+git push origin main --follow-tags
+
+# 3. publish artifacts to GitHub Releases
+GH_TOKEN=your_new_token pnpm build:mac:publish
+```
+
+Notes:
+
+- The token needs `repo` permission (private repo) or `public_repo` (public repo).
+- After publish, verify on GitHub Releases that `latest*.yml` and `*.blockmap` files exist.
